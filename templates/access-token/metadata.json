@@ -1,0 +1,28 @@
+{
+    "name": "access-token",
+    "description": "Template for sending access token",
+    "template": "template.mjml",
+    "attributes": {
+        "type": "object",
+        "properties": {
+            "user_name": {
+                "type": "string"
+            },
+            "user_token": {
+                "type": "string"
+            },
+            "user_email": {
+                "type": "string"
+            },
+            "site_url": {
+                "type": "string"
+            }
+        },
+        "required": [
+            "user_name",
+            "user_token",
+            "user_email",
+            "site_url"
+        ]
+    }
+}

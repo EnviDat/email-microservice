@@ -1,0 +1,58 @@
+<mjml>
+  <mj-head>
+    <mj-title>Access Token: {{user_token}}</mj-title>
+    <mj-preview>Access Token: {{user_token}}</mj-preview>
+    <mj-attributes>
+      <mj-class name="title" font-size="16px" />
+      <mj-all font-family="helvetica" font-size="14px" />
+    </mj-attributes>
+  </mj-head>
+
+  <mj-body>
+    <mj-section>
+
+      <mj-column>
+
+        <mj-image width="50px" alt="EnviDat Logo" src=" data:image/png;base64,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"></mj-image>
+
+        <mj-divider border-color="#007b83"></mj-divider>
+
+        <mj-spacer />
+        <mj-text mj-class="title">Dear {{user_name}},</mj-text>
+
+        <mj-spacer />
+        <mj-text>You have requested an access token on EnviDat.</mj-text>
+
+        <mj-spacer />
+        <mj-text>Your single use EnviDat token is: <b>{{user_token}}</b></mj-text>
+        <mj-spacer />
+
+        <mj-spacer />
+        <mj-button href="{{site_url}}/#/signin?email={{user_email}}&key={{user_token}}">Login here</mj-button>
+        <mj-spacer />
+
+        <mj-spacer />
+        <mj-text>Please note that this token will allow you to login in EnviDat only once and you will need to request a new token everytime you want to log in.</mj-text>
+
+        <mj-spacer />
+        <mj-text>If you didn’t request access to EnviDat, you can simply disregard this email.</mj-text>
+
+        <mj-spacer />
+        <mj-text>Have a nice day!</mj-text>
+        <mj-text>EnviDat Support</mj-text>
+        <mj-text>--</mj-text>
+        <mj-text>Message sent by EnviDat ({{site_url}})</mj-text>
+
+      </mj-column>
+
+    </mj-section>
+
+    <mj-section background-color="#007b83">
+      <mj-column>
+        <mj-social>
+          <mj-social-element name="twitter" href="https://twitter.com/envidatservice" />
+        </mj-social>
+      </mj-column>
+    </mj-section>
+  </mj-body>
+</mjml>
