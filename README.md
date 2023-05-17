@@ -37,6 +37,7 @@ curl -X 'POST' \
 import requests
 
 email_to = "YOUR_USER@wsl.ch"
+headers = {"Content-Type": "application/json"}
 params = {
     "from": "envidat@wsl.ch",
     "to": email_to,
@@ -47,8 +48,12 @@ params = {
         "site_url": "https://envidat.ch",
     }
 }
-requests.post(
+
+r = requests.post(
     "http://envidatdocker.wsl.ch:3010/templates/access-token/json",
-    params,
+    headers=headers,
+    json=params,
 )
+
+print(r.status_code)
 ```
