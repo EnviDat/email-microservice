@@ -11,6 +11,9 @@
             "package_title": {
                 "type": "string"
             },
+            "package_url_prefix": {
+                "type": "string"
+            },
             "site_url": {
                 "type": "string"
             }
@@ -18,6 +21,7 @@
         "required": [
             "user_name",
             "package_title",
+            "package_url_prefix",
             "site_url"
         ]
     }

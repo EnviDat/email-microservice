@@ -14,6 +14,12 @@
             "package_title": {
                 "type": "string"
             },
+            "package_url_prefix": {
+                "type": "string"
+            },
+            "approval_url": {
+                "type": "string"
+            },
             "is_update": {
                 "type": "boolean"
             },
@@ -25,6 +31,8 @@
             "user_name",
             "user_email",
             "package_title",
+            "package_url_prefix",
+            "approval_url",
             "site_url"
         ]
     }

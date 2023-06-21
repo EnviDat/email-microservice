@@ -24,7 +24,7 @@
         <mj-text>Your publication request has been approved and is now publically accessible.</mj-text>
 
         <mj-spacer />
-        <mj-button href="{{site_url}}/#/metadata/{{package_title}}">View</mj-button>
+        <mj-button href="{{package_url_prefix}}/{{package_title}}">View</mj-button>
         
         <mj-spacer />
         <mj-text>Have a nice day!</mj-text>

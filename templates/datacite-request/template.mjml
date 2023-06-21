@@ -26,12 +26,12 @@
               Publication request for: 
             {{/if}}
           </mj-raw>
-          <a href="{{site_url}}/#/metadata/{{package_title}}">{{package_title}}</a>
+          <a href="{{package_url_prefix}}/{{package_title}}">{{package_title}}</a>
           by {{user_name}} ({{user_email}})
         </mj-text>
 
         <mj-spacer />
-        <mj-button href="{{site_url}}/#/metadata/{{package_title}}/publish">Approve</mj-button>
+        <mj-button href="{{approval_url}}?id={{package_title}}">Approve</mj-button>
         
         <mj-spacer />
         <mj-text>Have a nice day!</mj-text>
