@@ -1,0 +1,24 @@
+{
+    "name": "datacite-published",
+    "description": "Inform the user that DataCite publication is complete.",
+    "template": "template.mjml",
+    "attributes": {
+        "type": "object",
+        "properties": {
+            "user_name": {
+                "type": "string"
+            },
+            "package_title": {
+                "type": "string"
+            },
+            "site_url": {
+                "type": "string"
+            }
+        },
+        "required": [
+            "user_name",
+            "package_title",
+            "site_url"
+        ]
+    }
+}
