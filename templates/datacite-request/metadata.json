@@ -1,6 +1,6 @@
 {
-    "name": "access-token",
-    "description": "Send an access token for login.",
+    "name": "datacite-request",
+    "description": "DataCite publication request or update.",
     "template": "template.mjml",
     "attributes": {
         "type": "object",
@@ -11,8 +11,11 @@
             "user_email": {
                 "type": "string"
             },
-            "user_token": {
+            "package_title": {
                 "type": "string"
+            },
+            "is_update": {
+                "type": "boolean"
             },
             "site_url": {
                 "type": "string"
@@ -20,8 +23,8 @@
         },
         "required": [
             "user_name",
-            "user_token",
             "user_email",
+            "package_title",
             "site_url"
         ]
     }
