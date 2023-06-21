@@ -1,0 +1,36 @@
+{
+    "name": "datacite-draft-failed",
+    "description": "Inform the user that DataCite publication is complete.",
+    "template": "template.mjml",
+    "attributes": {
+        "type": "object",
+        "properties": {
+            "user_name": {
+                "type": "string"
+            },
+            "user_email": {
+                "type": "string"
+            },
+            "package_title": {
+                "type": "string"
+            },
+            "package_url_prefix": {
+                "type": "string"
+            },
+            "error_msg": {
+                "type": "string"
+            },
+            "site_url": {
+                "type": "string"
+            }
+        },
+        "required": [
+            "user_name",
+            "user_email",
+            "package_title",
+            "package_url_prefix",
+            "error_msg",
+            "site_url"
+        ]
+    }
+}
