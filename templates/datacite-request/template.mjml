@@ -31,7 +31,7 @@
         </mj-text>
 
         <mj-spacer />
-        <mj-button href="{{approval_url}}/approval/accept?package_id={{package_title}}">Approve</mj-button>
+        <mj-button href="{{approval_url}}/datacite/publish?package_id={{package_title}}">Approve</mj-button>
         
         <mj-spacer />
         <mj-text>Have a nice day!</mj-text>
