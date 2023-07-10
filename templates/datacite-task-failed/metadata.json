@@ -1,6 +1,6 @@
 {
-    "name": "datacite-draft-failed",
-    "description": "Inform the user that DataCite publication is complete.",
+    "name": "datacite-task-failed",
+    "description": "Inform the user that a DataCite task failed.",
     "template": "template.mjml",
     "attributes": {
         "type": "object",

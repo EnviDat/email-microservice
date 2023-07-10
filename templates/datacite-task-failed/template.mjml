@@ -1,7 +1,7 @@
 <mjml>
   <mj-head>
-    <mj-title>Failed DOI Draft: {{package_title}}</mj-title>
-    <mj-preview>Failed DOI Draft: {{package_title}}, by author {{user_name}}</mj-preview>
+    <mj-title>Failed DOI Task: {{package_title}}</mj-title>
+    <mj-preview>Failed DOI Task: {{package_title}}, by author {{user_name}}</mj-preview>
     <mj-attributes>
       <mj-class name="title" font-size="16px" />
       <mj-all font-family="helvetica" font-size="14px" />
@@ -19,7 +19,7 @@
 
         <mj-spacer />
         <mj-text>
-          Notification of failed draft DOI creation for {{package_title}}
+          Notification of failed DOI (datacite) task for {{package_title}}
         </mj-text>
 
         <mj-spacer />
