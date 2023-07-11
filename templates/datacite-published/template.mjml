@@ -21,7 +21,7 @@
         <mj-text mj-class="title">Dear {{user_name}},</mj-text>
 
         <mj-spacer />
-        <mj-text>Your publication request has been approved and is now publically accessible.</mj-text>
+        <mj-text>Your publication request has been approved and is now publicly accessible.</mj-text>
 
         <mj-spacer />
         <mj-button href="{{package_url_prefix}}/{{package_title}}">View</mj-button>
