@@ -1,8 +1,8 @@
 version: "3"
 
 networks:
-  email-relay:
-    name: email-relay
+  link:
+    name: envidat
 
 services:
   catapulte:
@@ -18,5 +18,5 @@ services:
     ports:
       - 3010:3000
     networks:
-      - email-relay
+      - envidat
     restart: unless-stopped
