@@ -1,24 +1,22 @@
 version: "3"
 
 networks:
-  email-relay:
-    name: email-relay-local
+  envidat:
+    external: true
 
 services:
   email_service:
     image: docker.io/jdrouet/catapulte:1.0.0-alpha-1-alpine
-    container_name: email_relay
+    container_name: email_relay_main
     environment:
       TEMPLATE__TYPE: local
       TEMPLATE__PATH: /templates
     env_file:
       - runtime.env
     volumes:
-      - ./templates:/templates:ro
+      - $HOME/config/email-relay/main/templates:/templates:ro
     ports:
       - 3010:3000
-    extra_hosts:
-      - "mail.wsl.ch:10.30.1.224"
     networks:
-      - email-relay
+      - envidat
     restart: unless-stopped
