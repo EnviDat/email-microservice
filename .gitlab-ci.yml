@@ -33,7 +33,7 @@ remote-docker:
   script:
     - |
       # Create docker network (envidat)
-      ssh "$DEPLOY_SSH_USER@$DEPLOY_HOSTNAME" "docker network create envidat"
+      ssh "$DEPLOY_SSH_USER@$DEPLOY_HOSTNAME" "docker network create envidat || true"
       # Copy templates dir
       USER_DIR=$(echo "/home/$DEPLOY_SSH_USER")
       ssh "$DEPLOY_SSH_USER@$DEPLOY_HOSTNAME" "mkdir -p $USER_DIR/config/email-relay/$CI_COMMIT_REF_NAME"
