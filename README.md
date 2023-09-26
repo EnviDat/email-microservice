@@ -5,7 +5,7 @@ https://github.com/jdrouet/catapulte
 
 ## Running
 
-1. Create .run.env with environment variables:
+1. Create runtime.env with environment variables:
 
 ```dotenv
 # LOG: debug
@@ -17,7 +17,7 @@ SMTP__PORT: YOUR_MAIL_PORT
 
 3. Run the server
 
-`docker compose up -d`
+`docker compose -f docker-compose.main.yml up -d`
 
 4. Use via a POST request:
 
