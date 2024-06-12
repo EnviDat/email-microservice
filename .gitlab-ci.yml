@@ -41,8 +41,8 @@ remote-docker:
 #      Create docker network (envidat)
 #    - ssh "$DEPLOY_SSH_USER@$DEPLOY_HOSTNAME" "docker network create envidat || true"
     - echo "Copy templates to ${DEPLOY_SSH_USER}@${DEPLOY_HOSTNAME}:${USER_DIR}/config/${APP_NAME}/"
-    - ssh "$DEPLOY_SSH_USER@$DEPLOY_HOSTNAME" "mkdir -p $USER_DIR/config/$APP_NAME" -v
-    - scp -r templates "$DEPLOY_SSH_USER@$DEPLOY_HOSTNAME:$USER_DIR/config/$APP_NAME/" -v
+    - ssh -v "$DEPLOY_SSH_USER@$DEPLOY_HOSTNAME" "mkdir -p $USER_DIR/config/$APP_NAME"
+    - scp -v -r templates "$DEPLOY_SSH_USER@$DEPLOY_HOSTNAME:$USER_DIR/config/$APP_NAME/"
     - HOME=$USER_DIR
     - echo "Going to remotely start the docker-compose.${CI_COMMIT_REF_NAME}.yml on ${DEPLOY_SSH_USER}@${DEPLOY_HOSTNAME}"
     # use docker compose create to recreate the container and force pulling the latest image
@@ -82,8 +82,8 @@ manual-remote-docker:
 #      Create docker network (envidat)
 #    - ssh "$DEPLOY_SSH_USER@$DEPLOY_HOSTNAME" "docker network create envidat || true"
     - echo "Copy templates to ${DEPLOY_SSH_USER}@${DEPLOY_HOSTNAME}:${USER_DIR}/config/${APP_NAME}/"
-    - ssh "$DEPLOY_SSH_USER@$DEPLOY_HOSTNAME" "mkdir -p $USER_DIR/config/$APP_NAME" -v
-    - scp -r templates "$DEPLOY_SSH_USER@$DEPLOY_HOSTNAME:$USER_DIR/config/$APP_NAME/" -v
+    - ssh -v "$DEPLOY_SSH_USER@$DEPLOY_HOSTNAME" "mkdir -p $USER_DIR/config/$APP_NAME"
+    - scp -v -r templates "$DEPLOY_SSH_USER@$DEPLOY_HOSTNAME:$USER_DIR/config/$APP_NAME/"
     - HOME=$USER_DIR
     - echo "Going to remotely start the docker-compose.${CI_COMMIT_REF_NAME}.yml on ${DEPLOY_SSH_USER}@${DEPLOY_HOSTNAME}"
     # use docker compose create to recreate the container and force pulling the latest image
