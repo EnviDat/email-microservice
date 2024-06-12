@@ -26,13 +26,14 @@ remote-docker:
   variables:
     DOCKER_HOST: "ssh://$DEPLOY_SSH_USER@$DEPLOY_HOSTNAME"
   before_script:
+#    - apk add --update --no-cache git
     - echo "$RUNTIME_ENV" > runtime.env
     - echo "Adding SSH Key"
     - mkdir -p ~/.ssh
     - echo "$DEPLOY_SSH_KEY" > ~/.ssh/gitlab
     - chmod 400 ~/.ssh/gitlab
     - echo 'IdentityFile ~/.ssh/gitlab' > ~/.ssh/config
-    - ssh-keyscan -H $DEPLOY_HOSTNAME >> ~/.ssh/known_hosts
+    - ssh-keyscan -H $DEPLOY_HOSTNAME >> ~/.ssh/known_hosts -v
   script:
     - APP_NAME="email-relay-${CI_COMMIT_REF_NAME}"
     - USER_DIR=$(echo "/home/$DEPLOY_SSH_USER")
@@ -40,8 +41,8 @@ remote-docker:
 #      Create docker network (envidat)
 #    - ssh "$DEPLOY_SSH_USER@$DEPLOY_HOSTNAME" "docker network create envidat || true"
     - echo "Copy templates to ${DEPLOY_SSH_USER}@${DEPLOY_HOSTNAME}:${USER_DIR}/config/${APP_NAME}/"
-    - ssh "$DEPLOY_SSH_USER@$DEPLOY_HOSTNAME" "mkdir -p $USER_DIR/config/$APP_NAME"
-    - scp -r templates "$DEPLOY_SSH_USER@$DEPLOY_HOSTNAME:$USER_DIR/config/$APP_NAME/"
+    - ssh "$DEPLOY_SSH_USER@$DEPLOY_HOSTNAME" "mkdir -p $USER_DIR/config/$APP_NAME" -v
+    - scp -r templates "$DEPLOY_SSH_USER@$DEPLOY_HOSTNAME:$USER_DIR/config/$APP_NAME/" -v
     - HOME=$USER_DIR
     - echo "Going to remotely start the docker-compose.${CI_COMMIT_REF_NAME}.yml on ${DEPLOY_SSH_USER}@${DEPLOY_HOSTNAME}"
     # use docker compose create to recreate the container and force pulling the latest image
@@ -73,7 +74,7 @@ manual-remote-docker:
     - echo "$DEPLOY_SSH_KEY" > ~/.ssh/gitlab
     - chmod 400 ~/.ssh/gitlab
     - echo 'IdentityFile ~/.ssh/gitlab' > ~/.ssh/config
-    - ssh-keyscan -H $DEPLOY_HOSTNAME >> ~/.ssh/known_hosts
+    - ssh-keyscan -H $DEPLOY_HOSTNAME >> ~/.ssh/known_hosts -v
   script:
     - APP_NAME="email-relay-${CI_COMMIT_REF_NAME}"
     - USER_DIR=$(echo "/home/$DEPLOY_SSH_USER")
@@ -81,8 +82,8 @@ manual-remote-docker:
 #      Create docker network (envidat)
 #    - ssh "$DEPLOY_SSH_USER@$DEPLOY_HOSTNAME" "docker network create envidat || true"
     - echo "Copy templates to ${DEPLOY_SSH_USER}@${DEPLOY_HOSTNAME}:${USER_DIR}/config/${APP_NAME}/"
-    - ssh "$DEPLOY_SSH_USER@$DEPLOY_HOSTNAME" "mkdir -p $USER_DIR/config/$APP_NAME"
-    - scp -r templates "$DEPLOY_SSH_USER@$DEPLOY_HOSTNAME:$USER_DIR/config/$APP_NAME/"
+    - ssh "$DEPLOY_SSH_USER@$DEPLOY_HOSTNAME" "mkdir -p $USER_DIR/config/$APP_NAME" -v
+    - scp -r templates "$DEPLOY_SSH_USER@$DEPLOY_HOSTNAME:$USER_DIR/config/$APP_NAME/" -v
     - HOME=$USER_DIR
     - echo "Going to remotely start the docker-compose.${CI_COMMIT_REF_NAME}.yml on ${DEPLOY_SSH_USER}@${DEPLOY_HOSTNAME}"
     # use docker compose create to recreate the container and force pulling the latest image
