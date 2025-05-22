@@ -39,6 +39,7 @@ remote-docker:
       USER_DIR=$(echo "/home/$DEPLOY_SSH_USER")
       ssh "$DEPLOY_SSH_USER@$DEPLOY_HOSTNAME" "mkdir -p $USER_DIR/config/email-relay/$CI_COMMIT_REF_NAME"
       scp -r templates "$DEPLOY_SSH_USER@$DEPLOY_HOSTNAME:$USER_DIR/config/email-relay/$CI_COMMIT_REF_NAME/"
+      echo "${DOCKER_TOKEN}" | \docker login --username "${DOCKER_USERNAME}" --password-stdin
       HOME=$USER_DIR docker compose \
         --project-name="email-relay-${CI_COMMIT_REF_NAME}" \
         --file "docker-compose.$CI_COMMIT_REF_NAME.yml" \
@@ -73,6 +74,8 @@ manual-remote-docker:
     - scp -r templates "$DEPLOY_SSH_USER@$DEPLOY_HOSTNAME:$USER_DIR/config/$APP_NAME/"
     - HOME=$USER_DIR
     - echo "Going to remotely start the docker-compose.${CI_COMMIT_REF_NAME}.yml on ${DEPLOY_SSH_USER}@${DEPLOY_HOSTNAME}"
+    - echo "${DOCKER_TOKEN}" | \docker login --username "${DOCKER_USERNAME}" --password-stdin
+
     # use docker compose create to recreate the container and force pulling the latest image
     # to avoid using the local cache
     - |
