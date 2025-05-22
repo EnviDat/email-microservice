@@ -33,6 +33,7 @@ remote-docker:
     - ssh-keyscan -H $DEPLOY_HOSTNAME >> ~/.ssh/known_hosts
   script:
     - |
+      USER_DIR=$(echo "/home/$DEPLOY_SSH_USER")
       # Create docker network (envidat)
       #ssh "$DEPLOY_SSH_USER@$DEPLOY_HOSTNAME" "docker network create envidat || true"
       # Copy templates dir
@@ -71,6 +72,7 @@ manual-remote-docker:
     - echo 'IdentityFile ~/.ssh/gitlab' > ~/.ssh/config
     - ssh-keyscan -H $DEPLOY_HOSTNAME >> ~/.ssh/known_hosts -v
   script:
+    - USER_DIR=$(echo "/home/$DEPLOY_SSH_USER")
     - APP_NAME="email-relay-${CI_COMMIT_REF_NAME}"
     - USER_DIR=$(echo "/home/$DEPLOY_SSH_USER")
     - echo "Defined USER_DIR ${USER_DIR}"
