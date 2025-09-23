@@ -10,6 +10,8 @@ workflow:
   rules:
     - if: $CI_COMMIT_REF_NAME == "main"
       when: always
+    - if: $CI_COMMIT_REF_NAME == "staging"
+      when: always
     - if: $CI_COMMIT_REF_NAME == "dev"
       when: always
     - if: '$CI_PIPELINE_SOURCE == "web"'
@@ -23,49 +25,12 @@ remote-docker:
     - branches
   variables:
     DOCKER_HOST: "ssh://$DEPLOY_SSH_USER@$DEPLOY_HOSTNAME"
+    DOCKER_CONFIG: "$CI_PROJECT_DIR/.docker"
   before_script:
-    - echo "$RUNTIME_ENV" > runtime.env
-    - echo "Adding SSH Key"
-    - mkdir -p ~/.ssh
-    - echo "$DEPLOY_SSH_KEY" > ~/.ssh/gitlab
-    - chmod 400 ~/.ssh/gitlab
-    - echo 'IdentityFile ~/.ssh/gitlab' > ~/.ssh/config
-    - ssh-keyscan -H $DEPLOY_HOSTNAME >> ~/.ssh/known_hosts
-  script:
-    - |
-      # Create docker network (envidat)
-      #ssh "$DEPLOY_SSH_USER@$DEPLOY_HOSTNAME" "docker network create envidat || true"
-      # Copy templates dir
-      USER_DIR=$(echo "/home/$DEPLOY_SSH_USER")
-      ssh "$DEPLOY_SSH_USER@$DEPLOY_HOSTNAME" "mkdir -p $USER_DIR/config/email-relay/$CI_COMMIT_REF_NAME"
-      scp -r templates "$DEPLOY_SSH_USER@$DEPLOY_HOSTNAME:$USER_DIR/config/email-relay/$CI_COMMIT_REF_NAME/"
-    - HOME=$USER_DIR 
-    - echo "${DOCKER_TOKEN}" | \docker login --username "${DOCKER_USERNAME}" --password-stdin
-    - |
-      docker compose \
-        --project-name="email-relay-${CI_COMMIT_REF_NAME}" \
-        --file "docker-compose.$CI_COMMIT_REF_NAME.yml" \
-        up --detach --force-recreate
-
-# Job for manual deploying of a docker-compose file, to use it's
-# docker images, make sure before you run it that the images referenced
-# in the docker-compose.$CI_COMMIT_REF_NAME.yml exist!
-manual-remote-docker:
-  stage: manual-deploy
-  environment: $CI_COMMIT_REF_NAME
-  image: docker.io/docker:24.0
-  rules:
-    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
-      when: never
-    - if: '$CI_PIPELINE_SOURCE == "parent_pipeline"'
-      when: always
-    - when: manual
-  needs: []
-  # for manaul jobs add allow_failure so the whole pipeline won't show up as "blocked"
-  allow_failure: true
-  variables:
-    DOCKER_HOST: "ssh://$DEPLOY_SSH_USER@$DEPLOY_HOSTNAME"
-  before_script:
+#    - apk add --update --no-cache git
+    # Create Docker config dir inside job container
+    - mkdir -p "$DOCKER_CONFIG"
+    - echo "$DOCKER_AUTH_CONFIG" > "$DOCKER_CONFIG/config.json"
     - echo "$RUNTIME_ENV" > runtime.env
     - echo "Adding SSH Key"
     - mkdir -p ~/.ssh
@@ -84,8 +49,6 @@ manual-remote-docker:
     - scp -r templates "$DEPLOY_SSH_USER@$DEPLOY_HOSTNAME:$USER_DIR/config/$APP_NAME/"
     - HOME=$USER_DIR
     - echo "Going to remotely start the docker-compose.${CI_COMMIT_REF_NAME}.yml on ${DEPLOY_SSH_USER}@${DEPLOY_HOSTNAME}"
-    - echo "${DOCKER_TOKEN}" | \docker login --username "${DOCKER_USERNAME}" --password-stdin
-
     # use docker compose create to recreate the container and force pulling the latest image
     # to avoid using the local cache
     - |
@@ -98,3 +61,47 @@ manual-remote-docker:
         --file "docker-compose.$CI_COMMIT_REF_NAME.yml" \
         up --detach
 
+# Job for manual deploying of a docker-compose file, to use it's
+# docker images, make sure before you run it that the images referenced
+# in the docker-compose.$CI_COMMIT_REF_NAME.yml exist!
+manual-remote-docker:
+  stage: manual-deploy
+  environment: $CI_COMMIT_REF_NAME
+  image: docker.io/docker:24.0
+  when: manual
+  variables:
+    DOCKER_HOST: "ssh://$DEPLOY_SSH_USER@$DEPLOY_HOSTNAME"
+    DOCKER_CONFIG: "$CI_PROJECT_DIR/.docker"
+  before_script:
+    # Create Docker config dir inside job container
+    - mkdir -p "$DOCKER_CONFIG"
+    - echo "$DOCKER_AUTH_CONFIG" > "$DOCKER_CONFIG/config.json"
+    - echo "$RUNTIME_ENV" > runtime.env
+    - echo "Adding SSH Key"
+    - mkdir -p ~/.ssh
+    - echo "$DEPLOY_SSH_KEY" > ~/.ssh/gitlab
+    - chmod 400 ~/.ssh/gitlab
+    - echo 'IdentityFile ~/.ssh/gitlab' > ~/.ssh/config
+    - ssh-keyscan -H $DEPLOY_HOSTNAME >> ~/.ssh/known_hosts -v
+  script:
+    - APP_NAME="email-relay-${CI_COMMIT_REF_NAME}"
+    - USER_DIR=$(echo "/home/$DEPLOY_SSH_USER")
+    - echo "Defined USER_DIR ${USER_DIR}"
+#      Create docker network (envidat)
+#    - ssh "$DEPLOY_SSH_USER@$DEPLOY_HOSTNAME" "docker network create envidat || true"
+    - echo "Copy templates to ${DEPLOY_SSH_USER}@${DEPLOY_HOSTNAME}:${USER_DIR}/config/${APP_NAME}/"
+    - ssh "$DEPLOY_SSH_USER@$DEPLOY_HOSTNAME" "mkdir -p $USER_DIR/config/$APP_NAME"
+    - scp -r templates "$DEPLOY_SSH_USER@$DEPLOY_HOSTNAME:$USER_DIR/config/$APP_NAME/"
+    - HOME=$USER_DIR
+    - echo "Going to remotely start the docker-compose.${CI_COMMIT_REF_NAME}.yml on ${DEPLOY_SSH_USER}@${DEPLOY_HOSTNAME}"
+    # use docker compose create to recreate the container and force pulling the latest image
+    # to avoid using the local cache
+    - |
+      docker compose --project-name="$APP_NAME" \
+        --file "docker-compose.$CI_COMMIT_REF_NAME.yml" \
+        create --force-recreate --pull="always"
+    # use docker compose up to start the service on the remote machine
+    - |
+      docker compose --project-name="$APP_NAME" \
+        --file "docker-compose.$CI_COMMIT_REF_NAME.yml" \
+        up --detach

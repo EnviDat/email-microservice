@@ -14,7 +14,7 @@ services:
     env_file:
       - runtime.env
     volumes:
-      - $HOME/config/email-relay/main/templates:/templates:ro
+      - $HOME/config/email-relay-main/templates:/templates:ro
     ports:
       - 3010:3000
     networks:
